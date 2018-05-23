@@ -301,7 +301,7 @@
 # 29 表单处理 radio
 * 代码
 ```
- <div id="app">
+<div id="app">
     <input type="radio" value="male" v-model="sex"> 男 <br>
     <input type="radio" value="female" v-model="sex"> 女 <br>
 </div>
@@ -351,3 +351,44 @@
 * 在 option 标签上绑定绑定属性value `:value`
 
 # 31 表单修饰符
+* 代码
+```
+<div id="app">
+    <!-- v-model.number 强制转换为 number -->
+    <!-- 无论input.type是什么，表单里输入的数据，都一定是string类型的 -->
+    <input type="number" v-model="age">
+    <!-- 如果我非要要求数据类型是整形，在 v-model 绑定时添加 .number -->
+    <input type="number" v-model.number="age">
+
+    <!-- v.model.trim 忽略前后空格 -->
+    <input type="text" v-model.trim="title">
+
+    <!-- v.model.lay 懒更新，当输入框失焦时再更新值 -->
+    <input type="text" v-model.lazy="content">
+    <p><small>当前content值为：</small> {{ content }} </p>
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            age: 100,
+            title: 'Hello World',
+            content: '',
+        },
+        watch: {
+            // 监听 age 变化
+            age(newVal, oldVal) {
+                console.log(typeof(newVal));
+            },
+            title(newVal, oldVal) {
+                console.log(newVal.length);
+            }
+        },
+    });
+</script>
+```
+
+* 强制将输入内容转换为整数 `v-model.number`
+* 强制删除输入内容前后的空格 `v-model.trim`
+* 懒更新，当输入框失焦时才更新绑定的数据的值 `v-model.lazy` (常用于数据验证等，等用户输入完，再更新该数据的值，再执行验证)。 
