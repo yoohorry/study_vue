@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 事件修饰符 self & stop</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 先来看这个例子：冒泡向上执行事件 -->
+        <div @click="showDiv"> <!-- 这是一个父级元素 -->
+            <a href="https://www.baidu.com" @click.prevent="stopClick">点我1</a> <!-- 这是一个子元素 -->
+        </div> <!-- 上面这个例子，点击a会触发 stopClick 事件 **以及 showDiv** -->
+
+        <!-- 阻止这样的事情发生1 **stop** 不继续向上冒泡执行  -->
+        <div @click="showDiv">
+            <a href="https://www.baidu.com" @click.prevent.stop="stopClick">点我2</a> <!-- 这里通过链式操作，增加stop -->
+        </div>
+
+        <!-- 阻止这样的事情发生2 **self** 只有点击自己才触发 -->
+        <div @click.self="showDiv" :style="{border: '1px solid'}">
+            <a href="https://www.baidu.com" @click.prevent="stopClick">点我3</a> <!-- 这里通过链式操作，增加stop -->
+        </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                // 阻止 a 跳转到百度
+                stopClick() {
+                    alert('阻止了a默认事件')
+                },
+                // 父级 div 的点击事件
+                showDiv() {
+                    alert('触发了div的点击事件');
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

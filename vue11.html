@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 使用 key 标识元素</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="radio" value="email" v-model="registerType">使用邮箱注册
+        <input type="radio" value="phone" v-model="registerType">使用手机注册
+        <br>
+        <div v-if="registerType == 'email'">
+            <label for="email">邮箱：</label> <input type="text" id="email" name="username" key="username-email">
+        </div>
+        <div v-if="registerType == 'phone'">
+            <label for="phone">手机：</label> <input type="text" id="phone" name="username" key="username-phone">
+        </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                registerType: 'email'
+            },
+        });
+    </script>
+</body>
+
+</html>

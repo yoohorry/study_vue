@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 事件修饰符 prevent</title>
+</head>
+
+<body>
+    <div id="app">
+        <h3>表单一：不阻止，会刷新页面（action提交给本页）</h3>
+        <form action="">
+            <p>{{ time }}</p>
+            <button type="submit">提交</button>
+        </form>
+        <hr>
+        <h3>表单二：阻止默认事件的表单: @绑定事件在事件中阻止</h3>
+        <!-- 传递 $event 参数，代表这个表单。 -->
+        <form action="" @submit="submitFormOne($event)">
+            <p>{{ time }}</p>
+            <button type="submit">提交</button>
+        </form>
+        <hr>
+        <h3>表单三：阻止默认事件的Vue写法: @事件.prevent</h3>
+        <!-- 直接使用 @submit.prevent 来阻止 -->
+        <form action="" @submit.prevent="submitFormTwo">
+            <p>{{ time }}</p>
+            <button type="submit">提交</button>
+        </form>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                time : new Date(),
+            },
+            methods: {
+                // 阻止表单二的默认事件
+                submitFormOne(event) {
+                    // 采用原生的js方式，阻止表单提交
+                    event.preventDefault();
+                    alert("事件已阻止");
+                },
+                // 阻止表单三的默认事件
+                submitFormTwo() {
+                    alert("事件已阻止");
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

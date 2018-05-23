@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 事件</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <!-- v-on:事件="触发事件调用的函数(没有参数可以省略这个括号)" -->
+            <!-- 可以简写为 @事件="函数" -->
+            <li v-for="comment of comments" @dblclick="remove()"> {{ comment.id }} - {{ comment.content }} </li>
+        </ul>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                comments: [
+                    {id: 1, content:"这是一条评论1"},
+                ],
+            },
+            // 事件必须要写到 methods 里面
+            methods: {
+                remove() {
+                    console.log(1);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

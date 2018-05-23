@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 表单修饰符</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-model.number 强制转换为 number -->
+        <!-- 无论input.type是什么，表单里输入的数据，都一定是string类型的 -->
+        <input type="number" v-model="age">
+        <!-- 如果我非要要求数据类型是整形，在 v-model 绑定时添加 .number -->
+        <input type="number" v-model.number="age">
+
+        <!-- v.model.trim 忽略前后空格 -->
+        <input type="text" v-model.trim="title">
+
+        <!-- v.model.lay 懒更新，当输入框失焦时再更新值 -->
+        <input type="text" v-model.lazy="content">
+        <p><small>当前content值为：</small> {{ content }} </p>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                age: 100,
+                title: 'Hello World',
+                content: '',
+            },
+            watch: {
+                // 监听 age 变化
+                age(newVal, oldVal) {
+                    console.log(typeof(newVal));
+                },
+                title(newVal, oldVal) {
+                    console.log(newVal.length);
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

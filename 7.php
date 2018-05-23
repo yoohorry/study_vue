@@ -1,0 +1,1 @@
+<?php echo '测试 test...' . $_GET['word'];

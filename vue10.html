@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue v-if v-else-if v-else</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="checkbox" v-model="checked"> 当前checked = {{checked}}
+        <span v-if="!checked">请勾选</span>
+        <span v-else>您已勾选</span>
+        
+        <hr>
+        <label for="age">请输入你的年龄</label>
+        <input type="text" v-model="age" id="age"> ，
+        <span v-if="age<20">少年</span>
+        <span v-else-if="age<50">中年</span>
+        <span v-else>老年</span>
+
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                checked: false,
+            },
+        });
+    </script>
+</body>
+
+</html>

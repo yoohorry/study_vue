@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue v-show</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1 v-if="status">测试内容1</h1>
+        <hr>
+        <h1 v-show="status">测试内容2</h1>
+        <hr>
+        <input type="checkbox" v-model="status">显示/隐藏
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                status: true,
+            },
+        });
+    </script>
+</body>
+
+</html>

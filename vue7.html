@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <!-- 引用axios -->
+    <script src="node_modules/axios/dist/axios.min.js"></script>
+    <!-- 引用lodash -->
+    <script src="node_modules/lodash/lodash.js"></script>
+    <title>vue watch</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="keyWord">
+        {{ content }}
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            watch: {
+                keyWord: _.debounce(
+                        function(newWord, oldWord) {
+                        // 将新值作为数据参数 $_GET['word'] 请求 7.php 
+                        axios.get('./7.php?word=' + newWord).then(function(response) {
+                            app.content = response.data;
+                        })
+                    },
+                    3000,
+                )
+            },
+            data: {
+                keyWord: '',
+                content: '',
+            },
+        });
+    </script>
+</body>
+
+</html>

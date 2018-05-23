@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 变异splice</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="(tip, key) of tips">  {{tip.id}} - {{ tip.content }} <button v-on:click="removeThisTip(key)">删除这条</button></li>
+        </ul>
+
+        <textarea v-model="newTip"></textarea>
+        <br>
+        <!-- 通过 v-on:click="addNewTip" 绑定 methods 下定义的 addNewTip() -->
+        <button v-on:click="addNewTip(true)">添加到前面</button>
+        <button v-on:click="addNewTip(false)">添加到后面</button>
+        <br>
+        <button v-on:click="deleteTip(true)">删除第一条</button>
+        <button v-on:click="deleteTip(false)">删除最后一条</button>
+        <br>
+        <button v-on:click="doSort(true)">按编号从小到大排序</button>
+        <button v-on:click="doSort(false)">按编号从大到小排序</button>
+        <button v-on:click="doReverse">反转排序</button>
+        <br>
+        <input type="text" v-model="keyWord" v-on:keyup.enter="search">
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                keyWord: '', //这里定义一个关键字变量
+                newTip: '',
+                tips: [
+                    // 添加一个 id 属性用于排序
+                    {id: 1, content: '今天要做的事情'},
+                ],
+            },
+            // 定义事件
+            methods: {
+                // 搜索
+                search() {
+                    var reg = new RegExp(this.keyWord, 'i'); // 使用 RegExp 构建正则表达式 /keyword/i ， i 即 不区分大小写
+                    // 使用 filter 来过滤 tips 
+                    this.tips = this.tips.filter((tip)=> {
+                        return reg.test(tip.content); // RegExp.test(当字符串符合正则表达式规则，则返回true)
+                    });
+                    // 有一个问题： 过滤之后，原来的 this.tips.filter 不存在了...
+                },
+                // 排序
+                doSort(flag) {
+                    if(flag) {
+                        this.tips.sort(function(a, b) { // sort(回调函数(前一个元素, 后面的元素) { 为真则移动 })
+                            return a.id < b.id; // 注意参数进来的是对象，所以还得调用一下 obj.id 属性
+                        });
+                    }else {
+                        this.tips.sort(function(a, b) {
+                            return a.id > b.id;
+                        });
+                    }
+                },
+                // 反转
+                doReverse() {
+                    this.tips.reverse();
+                },
+                removeThisTip(key) {
+                    // splice(从哪条开始删, 删除多少条);
+                    this.tips.splice(key, 1);
+                },
+
+                addNewTip(flag) {
+                    var newTip = {id: this.tips.length+1, content: this.newTip}; // 数据处理中 多一个 id 字段 = tips.长度+1
+                    // 通过 flag 判断从前面还是后面添加
+                    if(flag) {
+                        this.tips.unshift(newTip); // unshift() 添加到前面
+                    }else {
+                        this.tips.push(newTip); // push() 添加到后面
+                    }
+                },
+
+                deleteTip(flag) {
+                    // 通过 flag 判断删除第一条还是最后一条
+                    if(flag) {
+                        this.tips.shift(); // shift() 删除最前面的一条数据
+                    }else {
+                        this.tips.pop(); // pop() 删除最后面的一条数据
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

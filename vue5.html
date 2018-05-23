@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <!-- 定义样式 -->
+    <style>
+        .style1 {
+            color: red;
+        }
+
+        .style2 {
+            color: blue;
+        }
+    </style>
+    <title>vue 执行js表达式进行运算</title>
+</head>
+
+<body>
+    <div id="app">
+        <p :class="'style'+n">test...</p>
+        <p>
+            <small>这是当前的n的值</small> {{n+'因为切换颜色的单选框.value是字符串，所以我这里也变成字符串了'}} </p>
+        <input type="radio" v-model="n" value="1"> 红
+        <input type="radio" v-model="n" value="2"> 蓝
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                n: 1,
+            },
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue v-model</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 使用 v-model 绑定数据 -->
+        <label for="id">序号</label> <input type="number" id="id" v-model="info.id"> <br>
+        <label for="name">姓名</label> <input type="text" id="name" v-model="info.name"> <br>
+        <label for="age">姓名</label> <input type="number" id="age" v-model="info.age"> <br>
+        <label for="desc">简介</label> 
+        <!-- 文本域同样使用 v-model 绑定 -->
+        <textarea id="desc" style="width: 100%" v-model="info.desc"></textarea>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                // 模拟从后台抓取的数据
+                info: {
+                    id: 1,
+                    name: 'liuhaoyu',
+                    age: 22,
+                    desc: '全栈程序员', 
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

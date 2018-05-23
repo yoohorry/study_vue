@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <style>
+        .blue {color: blue;}
+        .red {color: red;}
+        .font {font-size: 30px;}
+    </style>
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 使用数组和对象导入样式</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- vbind:class 简写为 :class -->
+        <!-- 会覆盖 class 定义的样式 因为 :class 会在 class 载入后再载入。 -->
+        <h1 class="blue" :class="style1">测试文字</h1>
+        <hr>
+        <!-- 可以绑定数组 -->
+        <h1 :class="[style2, style3]">测试文字</h1>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                style1: {red: true, font: true}, //设置为true 则开启使用样式
+                style2: 'blue', // key: value 这里的value对应 <style>里面定义的样式</style>
+                style3: 'font',
+            },
+        });
+    </script>
+</body>
+
+</html>

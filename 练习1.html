@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 练习1： 一个简单的便签</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1 :style="titleStyle"> {{ title }} </h1>
+        
+        <p :style="tipStyle" v-for="(tip, key) of tips">
+            {{ tip.id }} - {{ tip.content }}
+            <button style="float: right;" v-on:click="deleteThisTip(key)">删除这条数据</button>
+        </p>
+
+        <textarea style="width: 100%; height: 100px;" v-model="newTip" v-on:focus="claerTextArea"></textarea>
+        <button v-on:click="addNewTip" style="margin-right: 22px;">添加</button> 
+        <button v-on:click="deleteAll">删除所有便签</button>
+        <br>
+        <br>
+        <input type="text" v-model="keyWord" v-on:focus="clearInput" v-on:keyup.enter="search">
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                // 标题
+                title: '便签',
+                // 标题样式
+                titleStyle: {
+                    color: 'red',
+                    textAlign: 'center',
+                    padding: '20px',
+                    borderBottom: '2px red solid',
+                },
+                // 便签样式
+                tipStyle: {
+                    color: 'red',
+                    fontSize: '30px',
+                    borderBottom:  '1px red solid', 
+                },
+
+                // 便签内容
+                tips: [],
+                // 新的便签
+                newTip: '请输入要添加的便签内容...',
+                // 搜索关键字
+                keyWord: '请输入搜索关键字...',
+            },
+            methods: {
+                // 文本域聚焦时清
+                claerTextArea() {
+                    this.newTip = '';
+                },
+                // 添加新的便签
+                addNewTip() {
+                    // 处理数据
+                    var newTip = {
+                        id: typeof(this.tips) == "undefined" ? 1 : this.tips.length+1,
+                        content: this.newTip
+                    };
+                    this.tips.push(newTip);
+                    this.newTip = '';
+                },
+                // 删除某一条便签
+                deleteThisTip(key) {
+                    this.tips.splice(key, 1);
+                }, 
+                // 删除所有便签
+                deleteAll() {
+                    this.tips = [];
+                },
+                // 清空搜索框
+                clearInput() {
+                    this.keyWord = '';
+                },
+                // 根据关键字搜索
+                search() {
+                    var reg = new RegExp(this.keyWord);
+                    this.tips = this.tips.filter((tip)=> {
+                        return reg.test(tip.content);
+                    });
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

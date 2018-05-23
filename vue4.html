@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue v-text & v-html</title>
+</head>
+
+<body>
+    <div id="app">
+        <div v-text="content"></div>
+        <div v-html="content"></div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                content: '<p>v-text & v-html</p>'
+            },
+        });
+    </script>
+</body>
+
+</html>

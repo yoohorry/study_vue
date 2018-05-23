@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 变异splice</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="(tip, key) of tips"> {{ tip.content }} <button v-on:click="removeThisTip(key)">删除这条</button></li>
+        </ul>
+
+        <textarea v-model="newTip"></textarea>
+        <br>
+        <!-- 通过 v-on:click="addNewTip" 绑定 methods 下定义的 addNewTip() -->
+        <button v-on:click="addNewTip(true)">添加到前面</button>
+        <button v-on:click="addNewTip(false)">添加到后面</button>
+        <br>
+        <button v-on:click="deleteTip(true)">删除第一条</button>
+        <button v-on:click="deleteTip(false)">删除最后一条</button>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                newTip: '',
+                tips: [
+                    // {content: '今天要做的事情'},
+                ],
+            },
+            // 定义事件
+            methods: {
+                removeThisTip(key) {
+                    // splice(从哪条开始删, 删除多少条);
+                    this.tips.splice(key, 1);
+                },
+
+                addNewTip(flag) {
+                    var newTip = {content: this.newTip};
+                    // 通过 flag 判断从前面还是后面添加
+                    if(flag) {
+                        this.tips.unshift(newTip); // unshift() 添加到前面
+                    }else {
+                        this.tips.push(newTip); // push() 添加到后面
+                    }
+                },
+
+                deleteTip(flag) {
+                    // 通过 flag 判断删除第一条还是最后一条
+                    if(flag) {
+                        this.tips.shift(); // shift() 删除最前面的一条数据
+                    }else {
+                        this.tips.pop(); // pop() 删除最后面的一条数据
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

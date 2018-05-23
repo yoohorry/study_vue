@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue for循环</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <!-- 遍历数组集合 -->
+            <!-- (单个对象, 对象在数组中的下标) of 对象集合 -->
+            <li v-for="(user, key) of users">
+                <span> {{ key }} </span>
+                <span> {{ user.id }} </span> |
+                <span> {{ user.name }} </span>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                users: [
+                    {id: 11, name: 'DouZiZhang'},
+                    {id: 22, name: 'ZuiZiMa'},
+                    {id: 33, name: 'LaJi'},
+                ]
+            },
+        });
+    </script>
+</body>
+
+</html>

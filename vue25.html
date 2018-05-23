@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 键盘修饰符</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- @keyup 默认所有按键 -->
+        <input type="text" @keyup="consoleLogSth">
+        <!-- @keyup.enter 回车键才有用 -->
+        <input type="text" @keyup.enter="consoleLogSth">
+        <!-- 
+            除此之外还有
+            space tab 空格 制表符
+            up down left right 方向键
+            @key.ctrl, shift alt + 任意按键 
+         -->
+         <!-- 这是 ctrl+s (ASCII中 s = 83) -->
+         <input type="text" @keyup.ctrl.83="consoleLogSth">
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+            
+            },
+            methods: {
+                // 按键触发某些方法
+                consoleLogSth() {
+                    console.log('触发了keyup事件');
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue v-for遍历对象和整数</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-for 可以直接遍历对象，此时key为属性名称, index属性下标 -->
+        <p v-for="(item, key, index) in user">{{index}} - {{key}} - {{item}}</p>
+        <ul>
+            <!-- v-for 可以直接遍历 integer 数值 -->
+            <li v-for="v in 20">这是第{{v}}条列表项</li>
+        </ul>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                user: {
+                    name: 'liuhaoyu',
+                    age: 22,
+                    lang: 'php, html, js, css'
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

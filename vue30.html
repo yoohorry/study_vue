@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 表单控制 select</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 这里使用 v-model 绑定数据 -->
+        <select v-model="selectedCategory">
+            <!-- 默认数据 -->
+            <option value="">请选择</option>
+            <!-- 这里使用 v-for 循环， :value="绑定属性" -->
+            <option v-for="category of categories" :value="category.id"> {{ category.title }} </option>
+        </select>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                categories: [
+                    {id: 1, title: '选项1'},
+                    {id: 2, title: '选项2'},
+                    {id: 3, title: '选项3'},
+                    {id: 4, title: '选项4'},
+                ],
+                selectedCategory: "",
+            },
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <!-- 样式 -->
+    <style>
+        .red {
+            color: red;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+    <title>vue 操作元素属性</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1 v-bind:class="color" :class="'text-center'"> {{ title }} </h1>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                title: 'vue 操作元素属性 * v-bind:属性="key" *',
+                color: 'red'
+            },
+        });
+    </script>
+</body>
+
+</html>

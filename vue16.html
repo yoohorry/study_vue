@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 变异push</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="tip of tips"> {{ tip.content }} </li>
+        </ul>
+
+        <textarea v-model="newTip"></textarea>
+        <br>
+        <!-- 通过 v-on:click="addNewTip" 绑定 methods 下定义的 addNewTip() -->
+        <button v-on:click="addNewTip">新增</button>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                newTip: '',
+                tips: [
+                    {content: '今天要做的事情'},
+                ],
+            },
+            // 定义事件
+            methods: {
+                addNewTip() {
+                    // 处理要插入的数据，是一个对象
+                    var newTip = {content: this.newTip};
+                    // JS 的 push() 只能向数组中插入数据，而这里调用的 push() 是 Vue 帮我们变异过的 push()，可以向对象集合中插入数据。
+                    this.tips.push(newTip);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

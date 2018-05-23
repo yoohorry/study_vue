@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 使用多种方式控制元素styles属性</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 1、直接写对象 -->
+        <p :style="{color: 'red', fontSize: size+'px'}">嗯</p> 
+        <!-- 注意: 【''】单引号包起来的才是字符串，否则比如 size 就一定是在data里面定义的变量 -->
+        <input type="number" v-model="size">
+        
+        <!-- 2、使用对象： 再次强调这里的 styleObj 是 data 里定义的对象 -->
+        <p :style="styleObj">哈</p>
+        
+        <!-- 3、使用数组：导入多个对象  -->
+        <p :style="[styleObj, styleObj2]">哦</p>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                size: 20,
+                styleObj: {
+                    color: 'blue',
+                    fontSize: '30px',
+                },
+                styleObj2: {
+                    background: 'red',
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

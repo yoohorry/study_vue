@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue v-model绑定数据 v-once只绑定一次</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1> {{ content }} </h1>
+        <h2 v-once> {{ content }} </h1>
+            <input type="text" v-model="content">
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                content: '远走',
+            },
+        });
+    </script>
+</body>
+
+</html>

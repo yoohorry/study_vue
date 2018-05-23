@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 表单处理 checkbox</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 开关：不指定value属性，v-model绑定一个Boolean -->
+        <input type="checkbox" v-model="confirmed"> 确定？ {{ confirmed }}
+
+        <div>
+            <!-- 多选框：指定value属性，v-model绑定一个Array -->
+            <input type="checkbox" v-model="categories" value="food"> 美食
+            <input type="checkbox" v-model="categories" value="heal"> 健康
+            <input type="checkbox" v-model="categories" value="trav"> 旅行
+            <br>
+            {{categories}}
+        </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                confirmed: false,
+                // 如果是多选，要求定义的数据必须是一个数组
+                categories: [],
+            },
+        });
+    </script>
+</body>
+
+</html>
