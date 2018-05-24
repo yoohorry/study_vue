@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 组件</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 定义好全局组件之后， -->
+        <test1></test1>
+        <test2></test2>
+        <test3></test3>
+        <test4></test4>
+    </div>
+    
+
+    <script>
+        // 我们在这里定义 “全局组件”
+        Vue.component('test1', { // Vue.component('标签', { //... 定义 })
+            template: '<h1> 这是全局组件的模板test1 </h1>', //模板
+        });
+
+        // 为了方便我们还可以定义一个变量存储局部组件然后在根组件中载入 （这个定义也必须声明在前面）
+        var test4= {
+            template: '<h2> 这是局部组件的模板test4 </h2>',
+        }
+
+        // 我们之前一直定义的其实是 “根组件”
+        var app = new Vue({
+            el: '#app',
+            data: {
+                
+            },
+            // 我们还可以定义 “局部组件”
+            components: {
+                test3: {
+                    template: '<h2> 这是局部组件的模板test3 </h2>',
+                },
+                // test4: test4,
+                // 可以使用 ES6 语法，由于 key: value 是一样的，直接:
+                test4
+            }
+        });
+
+        // “全局组件” 必须在根组件之前定义
+        Vue.component('test2', {
+            template: '<h1> 这是全局组件的模板test2 </h1>',
+        });
+    </script>
+</body>
+
+</html>

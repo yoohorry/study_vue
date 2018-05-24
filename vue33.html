@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 组件中操作数据</title>
+</head>
+
+<body>
+    <div id="app">
+        <test></test>
+    </div>
+
+    <!-- 在 Vue 中可以使用这样的方式定义模板 -->
+    <script type="text/x-template" id="myComponent">
+        <ul>
+            <li v-for="v in news">{{ v.id }} - {{ v.title }}</li>
+        </ul>
+    </script>
+
+    <script>
+        var myComponent = {
+            template: "#myComponent",
+            // data: {} //子组件中不能把data定义成属性。会报错：
+            // The "data" option should be a function that returns a per-instance value in component definitions.
+            data() { //必须这样定义 data() { return {json对象} }
+                return {
+                    news: [
+                        {id:1, title:'测试1'},
+                        {id:2, title:'测试2'},
+                    ],
+                };
+            }
+        };
+        var app = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            components: {
+                // 有个坑： ES6 方式注册子组件不能使用 驼峰 风格命令，Vue会自动转换成全小写。
+                test: myComponent,
+            }
+        });
+    </script>
+</body>
+
+</html>

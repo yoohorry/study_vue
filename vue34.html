@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 子组件接收父组件传递的参数</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 在标签里面传递 :子组件.props中声明的名字 = "根组件.data中的变量名" -->
+        <!-- 如果不写 :属性="value" 的话，会解析为字符串 -->
+        <students :students="students" flag1="false" :flag2="true"></students>    
+    </div>
+
+    <!-- 模板 -->
+    <script type="text/x-template" id="students">
+        <ul>
+            <li v-for="student in students"> {{ student.id }} - {{ student.name }} </li>
+
+            <span v-if="flag1"> 这其实是字符串 {{ flag1 }} </span> <!-- 这里之所以flag = "false" 会显示是因为 字符串"false" = 布尔true -->
+            <span v-if="flag2"> ：这才是布尔值 {{ flag2 }} </span> <!-- 因此这里如果传递 flag2 = false 则不会显示 -->
+        </ul>
+    </script>
+
+    <script>
+        // 子组件
+        var students= {
+            template: "#students",
+            // 在接收时需要在 props 属性中声明
+            props: ['students', 'flag1', 'flag2'],
+        };
+        
+        // 根组件
+        var app = new Vue({
+            el: '#app',
+            // 定义父组件的数据
+            data: {
+                students: [
+                    {id: 1, name: 'liuihaoyu'},
+                    {id: 2, name: 'lidaye'},
+                    {id: 3, name: 'linainai'},
+                ],
+            },
+            // 注册子组件
+            components: {
+                students,
+            }
+        });
+    </script>
+</body>
+
+</html>
