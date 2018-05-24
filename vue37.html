@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 购物车更优写法：sync同步更新</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 这里使用 :绑定属性.sync同步数据="父组件的goods" => 达到了当子组件的goods发生变化时，父组件的goods也会变化 -->
+        <cart :goods.sync="goods"></cart>
+        <span>
+            总计：￥ {{ totalPrice }} 元
+        </span>
+    </div>
+
+    <!-- 模板 -->
+    <script type="text/x-template" id="cart">
+       <table border="1">
+           <thead>
+               <tr>
+                   <th>商品名称</th>
+                   <th>价格</th>
+                   <th>数量</th>
+               </tr>
+           </thead>
+           <tbody>
+               <tr v-for="good in goods">
+                   <td>{{ good.name }}</td>
+                   <td>{{ good.price }}</td>
+                   <td>
+                       <input type="text" v-model="good.number">
+                   </td>
+               </tr>
+           </tbody>
+       </table>
+    </script>
+
+    <script>
+        //子组件
+        var cart = {
+            template: "#cart",
+            props: {
+                goods: {
+                    type: Array,
+                }
+            },
+        }
+        
+        // 根组件
+        var app = new Vue({
+            el: '#app',
+            data: {
+                // 定义商品信息
+                goods: [
+                    {name: "macbookPro 2018", price: "20000", number:1},
+                    {name: "iphone 8", price: "6888", number:1},
+                    {name: "iphone8 Plus", price: "8888", number:1},
+                ],
+                // 总价初始化
+                total: 0,
+            },
+            // 注册子组件
+            components: {
+                cart,
+            },
+            // 计算总价
+            computed: {
+                totalPrice() {
+                    var sum = 0;
+                    this.goods.forEach((good) => {
+                        sum += good.price * good.number;
+                    });
+                    return sum;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

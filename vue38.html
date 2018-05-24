@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue slot内容分发</title>
+</head>
+
+<body>
+    <div id="app">
+        <test>
+            <h1 slot="title">这是标题</h1>
+            <p slot="content">这是内容</p>
+            <test1 slot="myinput" type="email" title="邮箱" placeholder="username@example.com"></test1>
+            <test1 slot="myinput" type="text" title="用户名" placeholder="yourNickName"></test1>
+            <test1 slot="myinput" type="password" title="密码" placeholder="yourBirthday"></test1>
+        </test>
+    </div>
+
+    <!-- 子组件模板 test -->
+    <script type="text/x-template" id="test">
+        <div>
+            <slot name="title"></slot>
+            <slot name="content"></slot>
+            <slot name="myinput"></slot>
+        </div>
+    </script>
+
+    <!-- 子组件模板 test1 -->
+    <script type="text/x-template" id="test1">
+        <div>
+            <span>{{ title }}</span>
+            <input :type="type" :placeholder="placeholder">
+        </div>
+    </script>
+
+    <script>
+        // 子组件 test
+        var test = {
+            template: "#test",
+        };
+        // 子组件 test1
+        var test1 = {
+            template: "#test1",
+            props: ['type', 'title', 'placeholder']
+        }
+        // 根组件
+        var app = new Vue({
+            el: '#app',
+            data: {
+            },
+            components: {
+                test,
+                test1,
+            }
+        });
+    </script>
+</body>
+
+</html>

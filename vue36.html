@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 子组件通讯父组件实现购物车</title>
+</head>
+
+<body>
+    <div id="app">
+        <cart :goods="goods" @refresh="totalPrice"></cart>
+        <span>
+            总计：￥ {{ total }} 元
+        </span>
+    </div>
+
+    <!-- 模板 -->
+    <script type="text/x-template" id="cart">
+       <table border="1">
+           <thead>
+               <tr>
+                   <th>商品名称</th>
+                   <th>价格</th>
+                   <th>数量</th>
+               </tr>
+           </thead>
+           <tbody>
+               <tr v-for="good in goods">
+                   <td>{{ good.name }}</td>
+                   <td>{{ good.price }}</td>
+                   <td>
+                       <input type="text" v-model="good.number" @blur="refresh">
+                   </td>
+               </tr>
+           </tbody>
+       </table>
+    </script>
+
+    <script>
+        //子组件
+        var cart = {
+            template: "#cart",
+            props: {
+                goods: {
+                    type: Array,
+                }
+            },
+            methods: {
+                refresh() {
+                    this.$emit('refresh')
+                }
+            },
+        }
+        
+        // 根组件
+        var app = new Vue({
+            el: '#app',
+            data: {
+                // 定义商品信息
+                goods: [
+                    {name: "macbookPro 2018", price: "20000", number:1},
+                    {name: "iphone 8", price: "6888", number:1},
+                    {name: "iphone8 Plus", price: "8888", number:1},
+                ],
+                // 总价初始化
+                total: 0,
+            },
+            // 注册子组件
+            components: {
+                cart,
+            },
+            methods: {
+                // 计算总价
+                totalPrice() {
+                    this.total = 0;
+                    this.goods.forEach((good) => {
+                        this.total += good.price * good.number;
+                    });
+                }
+            },
+            // 挂载钩子程序
+            mounted() { // 类似于 初始化程序
+                this.totalPrice(); // 直接调用计算总价的方法
+            },
+        });
+    </script>
+</body>
+
+</html>

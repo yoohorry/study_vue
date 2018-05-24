@@ -205,3 +205,230 @@
     * `required: true | false` 指定是否必须传入该参数
     * `default() {  //return一个默认值  }` 设置默认值
     * `validator(value) { //执行相关验证为true通过 }` 进行数据验证，为真则通过。 这里发现不通过也会显示数据，但是会在浏览器控制台提醒错误。记得参数里要写一个 value 对应传递进来的数据。
+
+# 36 通过子组件呼叫父组件实现简单的购物车
+* 代码
+```
+<div id="app">
+    <cart :goods="goods" @refresh="totalPrice"></cart>
+    <span>
+        总计：￥ {{ total }} 元
+    </span>
+</div>
+
+<!-- 模板 -->
+<script type="text/x-template" id="cart">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>商品名称</th>
+                <th>价格</th>
+                <th>数量</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="good in goods">
+                <td>{{ good.name }}</td>
+                <td>{{ good.price }}</td>
+                <td>
+                    <input type="text" v-model="good.number" @blur="refresh">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script>
+    //子组件
+    var cart = {
+        template: "#cart",
+        props: {
+            goods: {
+                type: Array,
+            }
+        },
+        methods: {
+            refresh() {
+                this.$emit('refresh')
+            }
+        },
+    }
+    
+    // 根组件
+    var app = new Vue({
+        el: '#app',
+        data: {
+            // 定义商品信息
+            goods: [
+                {name: "macbookPro 2018", price: "20000", number:1},
+                {name: "iphone 8", price: "6888", number:1},
+                {name: "iphone8 Plus", price: "8888", number:1},
+            ],
+            // 总价初始化
+            total: 0,
+        },
+        // 注册子组件
+        components: {
+            cart,
+        },
+        methods: {
+            // 计算总价
+            totalPrice() {
+                this.total = 0;
+                this.goods.forEach((good) => {
+                    this.total += good.price * good.number;
+                });
+            }
+        },
+        // 挂载钩子程序
+        mounted() { // 类似于 初始化程序
+            this.totalPrice(); // 直接调用计算总价的方法
+        },
+    });
+</script>
+```
+
+* 在父组件挂载钩子程序 `mounted() { //调用里面的方法，记得 **this.**function() }` 。 “相当于初始化方法” => 当组件载入完的时候就执行。
+* 子组件在更改商品数量时，更新父组件中的总价:
+    * 第1步： html代码中，在子组件的标签上绑定事件 refresh `@refresh="totalPrice"` 即子组件调用 refresh() 方法时，就调用的是父组件里的 计算总价 方法。
+    * 第2步： 给绑定了商品数量的 input 添加一个失焦事件 `@blur` 当它改变时，调用子组件的 refresh() 方法
+    * 第3步： 子组件的 refresh() 方法被调用时，使用 `$this.$emit('refresh')` 调用 第1步 上绑定的自定义事件 refresh。
+    * 即： 子组件标签上的 `@refresh` => 事件， `@blur="refresh"` => 子组件的 methods 中定义的方法。 是 refresh() 方法，通过 `this.$emit('事件名')` 呼叫了事件。
+
+# 37 更优写法实现36购物车功能
+* 代码
+```
+<div id="app">
+    <!-- 这里使用 :绑定属性.sync同步数据="父组件的goods" => 达到了当子组件的goods发生变化时，父组件的goods也会变化 -->
+    <cart :goods.sync="goods"></cart>
+    <span>
+        总计：￥ {{ totalPrice }} 元
+    </span>
+</div>
+
+<!-- 模板 -->
+<script type="text/x-template" id="cart">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>商品名称</th>
+                <th>价格</th>
+                <th>数量</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="good in goods">
+                <td>{{ good.name }}</td>
+                <td>{{ good.price }}</td>
+                <td>
+                    <input type="text" v-model="good.number">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script>
+    //子组件
+    var cart = {
+        template: "#cart",
+        props: {
+            goods: {
+                type: Array,
+            }
+        },
+    }
+    
+    // 根组件
+    var app = new Vue({
+        el: '#app',
+        data: {
+            // 定义商品信息
+            goods: [
+                {name: "macbookPro 2018", price: "20000", number:1},
+                {name: "iphone 8", price: "6888", number:1},
+                {name: "iphone8 Plus", price: "8888", number:1},
+            ],
+            // 总价初始化
+            total: 0,
+        },
+        // 注册子组件
+        components: {
+            cart,
+        },
+        // 计算总价
+        computed: {
+            totalPrice() {
+                var sum = 0;
+                this.goods.forEach((good) => {
+                    sum += good.price * good.number;
+                });
+                return sum;
+            }
+        }
+    });
+</script>
+```
+
+* 不需要在子组件标签上绑定自定义事件了，只需要 `:goods.sync="goods"` 来实现：当子组件的变量 goods 发生变化时， 父组件的goods也同步(sync)发生变化。
+* 同时不需要再在子、父组件中定义 methods 了。 子组件的 input 中也不需要 `@blur` 绑定失焦事件了。
+* 在父组件中定义 computed 计算属性 `computed: { 属性() { //...进行计算 return 结果 } }` 
+* 在 html 代码，总价中载入 计算属性 中定义的 **totalPrice** 即可。
+
+# 38 子组件 slot 内容分发
+* 代码
+```
+<div id="app">
+    <test>
+        <h1 slot="title">这是标题</h1>
+        <p slot="content">这是内容</p>
+        <test1 slot="myinput" type="email" title="邮箱" placeholder="username@example.com"></test1>
+        <test1 slot="myinput" type="text" title="用户名" placeholder="yourNickName"></test1>
+        <test1 slot="myinput" type="password" title="密码" placeholder="yourBirthday"></test1>
+    </test>
+</div>
+
+<!-- 子组件模板 test -->
+<script type="text/x-template" id="test">
+    <div>
+        <slot name="title"></slot>
+        <slot name="content"></slot>
+        <slot name="myinput"></slot>
+    </div>
+</script>
+
+<!-- 子组件模板 test1 -->
+<script type="text/x-template" id="test1">
+    <div>
+        <span>{{ title }}</span>
+        <input :type="type" :placeholder="placeholder">
+    </div>
+</script>
+
+<script>
+    // 子组件 test
+    var test = {
+        template: "#test",
+    };
+    // 子组件 test1
+    var test1 = {
+        template: "#test1",
+        props: ['type', 'title', 'placeholder']
+    }
+    // 根组件
+    var app = new Vue({
+        el: '#app',
+        data: {
+        },
+        components: {
+            test,
+            test1,
+        }
+    });
+</script>
+```
+
+* 在子组件中定义 **slot** `<slot name="取个名字">`
+* 在根组件中填充 **slot** `<任意标签 slot="要填充的slot名字">填充的内容</slot>`
+* 利用其他组件在根组件中填充某个组件 `<其他组件 slot="要填充的slot名字" 话可以传递属性...></其他组件>`
+* 可以反复填充一个slot。
