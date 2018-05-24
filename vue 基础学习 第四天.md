@@ -147,3 +147,61 @@
 * 整个过程：（根组件）父组件.data中定义数据，然后在html代码中 **子组件的标签上** 使用 `:xxx="定义的变量"` 传递数据。
 * 子组件需要声明 `props = ['接受的数据xxx', '接受的数据yyy', '接受的数据zzz']`
 * 如果在html中， 子组件的标签上这么传递数据 `xxx="value"` ，这样 子组件.props 接受的其实是字符串，而不是父组件data中声明的值。 
+
+# 35 props 数据验证
+* 代码
+```
+<div id="app">
+    <!-- 在标签里面传递 :子组件.props中声明的名字 = "根组件.data中的变量名" -->
+    <!-- 如果不写 :属性="value" 的话，会解析为字符串 -->
+    <students></students>    
+</div>
+
+<!-- 模板 -->
+<script type="text/x-template" id="students">
+    <ul>
+        <li v-for="student in students"> {{ student.id }} - {{ student.name }} </li>
+    </ul>
+</script>
+
+<script>
+    // 子组件
+    var students= {
+        template: "#students",
+        // 在 props 中进行数据验证
+        props: { // 1、要求props定义成一个对象
+            students: { // 2、用 【属性名: { //...相关配置 }】 进行数据接收
+                type: [Array, Object], // 指定数据类型
+                // required: true, // 设置数据是否必填
+                default() { // 设置默认值
+                    return [
+                        {id: 1, name: 'liuhaoyu'},
+                    ];
+                },  
+                validator(value) { // 设置数据验证规则
+                    return value[0].id > 0;
+                }
+            },
+        }
+    };
+    
+    // 根组件
+    var app = new Vue({
+        el: '#app',
+        // 定义父组件的数据
+        data: {
+        },
+        // 注册子组件
+        components: {
+            students,
+        }
+    });
+</script>
+```
+* 如果想对 子组件.props 属性声明并接收的数据进行数据校验的话，需要将 props 写成对象。
+* 之后接受数据时用 `变量名: { //...相关定义 }` 进行接收。
+* 在相关定义里，我们可以：
+    * `type: 指定数据类型，可以使用数组的形式指定多种数据类型`,
+    * `required: true | false` 指定是否必须传入该参数
+    * `default() {  //return一个默认值  }` 设置默认值
+    * `validator(value) { //执行相关验证为true通过 }` 进行数据验证，为真则通过。 这里发现不通过也会显示数据，但是会在浏览器控制台提醒错误。记得参数里要写一个 value 对应传递进来的数据。

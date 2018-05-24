@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue props 数据验证</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 在标签里面传递 :子组件.props中声明的名字 = "根组件.data中的变量名" -->
+        <!-- 如果不写 :属性="value" 的话，会解析为字符串 -->
+        <students></students>    
+    </div>
+
+    <!-- 模板 -->
+    <script type="text/x-template" id="students">
+        <ul>
+            <li v-for="student in students"> {{ student.id }} - {{ student.name }} </li>
+        </ul>
+    </script>
+
+    <script>
+        // 子组件
+        var students= {
+            template: "#students",
+            // 在 props 中进行数据验证
+            props: { // 1、要求props定义成一个对象
+                students: { // 2、用 【属性名: { //...相关配置 }】 进行数据接收
+                    type: [Array, Object], // 指定数据类型
+                    // required: true, // 设置数据是否必填
+                    default() { // 设置默认值
+                        return [
+                            {id: 1, name: 'liuhaoyu'},
+                        ];
+                    },  
+                    validator(value) { // 设置数据验证规则
+                        return value[0].id > 0;
+                    }
+                },
+            }
+        };
+        
+        // 根组件
+        var app = new Vue({
+            el: '#app',
+            // 定义父组件的数据
+            data: {
+            },
+            // 注册子组件
+            components: {
+                students,
+            }
+        });
+    </script>
+</body>
+
+</html>
