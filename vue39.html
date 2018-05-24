@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 在父组件使用scope接收数据</title>
+</head>
+
+<body>
+    <div id="app">
+        <users :users="users" scope="v">
+            <!-- 这里 **必须** 使用 template 标签 -->
+            <!-- 并且使用 scope="任意变量名" 接收 slot抛出的数据 -->
+            <template scope="data">
+                <li>
+                    {{ data.user.id }} - {{ data.user.name }}
+                </li>
+            </template>
+        </users>
+    </div>
+
+    <script type="text/x-template" id="users">
+        <ul>
+            <!-- <li v-for="user in users"> {{ user.id }} - {{ user.name }}</li> -->
+            <!-- 这里用slot定义，但是在后面用 :user="user" 抛出数据 -->
+            <slot v-for="user in users" :user="user"></slot>
+        </ul>
+    </script>
+
+    <script>
+        var users = {
+            template: "#users",
+            props: {
+                users: {
+                    type: Array,
+                },
+            }
+        };
+        var app = new Vue({
+            el: '#app',
+            data: {
+                users: [
+                    {id: 1, name: 'liuhaoyu'},
+                    {id: 2, name: 'lidaye'},
+                    {id: 3, name: 'linainai'},
+                ]
+            },
+            components: {
+                users,
+            }
+        });
+    </script>
+</body>
+
+</html>

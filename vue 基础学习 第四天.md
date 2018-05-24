@@ -432,3 +432,101 @@
 * 在根组件中填充 **slot** `<任意标签 slot="要填充的slot名字">填充的内容</slot>`
 * 利用其他组件在根组件中填充某个组件 `<其他组件 slot="要填充的slot名字" 话可以传递属性...></其他组件>`
 * 可以反复填充一个slot。
+
+# 39 scope 的使用
+* 代码
+```
+<div id="app">
+    <users :users="users" scope="v">
+        <!-- 这里 **必须** 使用 template 标签 -->
+        <!-- 并且使用 scope="任意变量名" 接收 slot抛出的数据 -->
+        <template scope="data">
+            <li>
+                {{ data.user.id }} - {{ data.user.name }}
+            </li>
+        </template>
+    </users>
+</div>
+
+<script type="text/x-template" id="users">
+    <ul>
+        <!-- <li v-for="user in users"> {{ user.id }} - {{ user.name }}</li> -->
+        <!-- 这里用slot定义，但是在后面用 :user="user" 抛出数据 -->
+        <slot v-for="user in users" :user="user"></slot>
+    </ul>
+</script>
+
+<script>
+    var users = {
+        template: "#users",
+        props: {
+            users: {
+                type: Array,
+            },
+        }
+    };
+    var app = new Vue({
+        el: '#app',
+        data: {
+            users: [
+                {id: 1, name: 'liuhaoyu'},
+                {id: 2, name: 'lidaye'},
+                {id: 3, name: 'linainai'},
+            ]
+        },
+        components: {
+            users,
+        }
+    });
+</script>
+```
+
+* 具体过程： 父组件中定义 data.users 数据，然后在子组件标签上传递给子组件。
+* 然后在子组件循环时，使用 `<slot>` 来遍历数据
+* 并且在遍历时，抛出数据 `<slot v-for="data in datas" :data="data"></slot>`
+* 在父组件中，载入子组件的标签内
+```
+<子组件>
+    <template scope="任意变量名这里暂时用data">
+        <合适的标签>
+            {{ data.data.属性 }} =>第一个data对应scope里的，第二个data对应子组件中使用 :data 抛出的。
+        </合适的标签>
+    </template>
+</子组件>
+``` 
+* 总体来说，这个功能不常用。整个逻辑更像是在 html 代码中遍历子组件中的 slot。
+
+# 40 动态组件
+* 代码
+```
+<div id="app">
+    <input type="radio" v-model="formType" value="myInput"> 使用 input
+    <input type="radio" v-model="formType" value="myTextarea"> 使用 textarea
+
+    <div :is="formType"></div>
+</div>
+
+<script>
+    var myInput = {
+        template: "<div> <input> </div>",
+    };
+    var myTextarea = {
+        template: "<div> <textarea></textarea> </div>",
+    }
+    var app = new Vue({
+        el: '#app',
+        data: {
+            formType: "myInput",
+        },
+        components: {
+            myInput,
+            myTextarea
+        }
+    });
+</script>
+```
+
+* 我们实现了一个功能：通过勾选不同的单选框，显示不同的表单项（input | textarea）.
+* 具体实现是通过一个 div 作为载体, 绑定 id 属性 `<div :id="formType">` .
+* 这里的 formType 对应的是我们定义并在根组件的 components 属性中声明的根组件.
+* 补充一点疑问: 子组件在 components 声明叫做 **myInput**, 那么在 html 中载入组件应该使用 `<my-input></my-input>` 载入,而不是 `<myInput></myInput>` => 因为这样浏览器会解析为全小写的变量名.(之前遇到过这个问题)
