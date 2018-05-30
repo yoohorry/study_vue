@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <!-- 1、引用 animate.css -->
+    <link rel="stylesheet" href="animate.css">
+
+    <title>vue css 动画</title>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="flag=!flag">切换</button>
+        <!-- 2、用一个 <transition> 标签把动画影响的元素包裹起来 -->
+        <!-- 3、给 <transition> 属性 enter-active-class="指定元素显示时的动画" leave-active-class="元素隐藏时的动画" -->
+        <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+            <h1 v-if="flag">测试</h1>
+        </transition>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                flag: true,
+            },
+        });
+    </script>
+</body>
+
+</html>
