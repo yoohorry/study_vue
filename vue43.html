@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 组件中使用指令</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1 v-test="color">字</h1>
+        <input type="text" v-model="color" v-focus>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                color: 'red',
+            },
+            directives: {
+                // 这个相当于 bind() + update() 动作
+                test(el, bind) {
+                    var color = bind.value ? bind.value : red;
+                    el.style.cssText = "color:" + color;
+                },
+                // 这个相当于其他动作
+                focus: {
+                    // 比如 inserted : 当子元素插入到父元素的时候调用
+                    inserted(el, bind) {
+                        el.focus();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 引用vue -->
+    <script src="vue.js"></script>
+    <title>vue 指令</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <span v-star>测试</span> -->
+        <input type="text" v-model="title" v-bindandupdate.focus="title">
+    </div>
+
+    <script>
+        // Vue.directive('star', {
+        //     // 绑定
+        //     bind(el, bind) {
+        //         console.log(bind);
+        //     }
+        // })
+        // Vue.directive('test', {
+        //     // 更新
+        //     update(el, bind) {
+        //         console.log(bind);
+        //     }
+        // })
+        Vue.directive('bindandupdate', function(el, bind) {
+            console.log(bind);
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                title: "ceshi",
+            },
+        });
+    </script>
+</body>
+
+</html>
